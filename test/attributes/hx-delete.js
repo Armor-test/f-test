@@ -13,7 +13,7 @@ describe('hx-delete attribute', function() {
       xhr.respond(200, {}, 'Deleted!')
     })
 
-    var btn = make('<button hx-delete="/test">Click Me!</button>')
+    const btn = make('<button hx-delete="/test">Click Me!</button>')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Deleted!')
@@ -24,7 +24,7 @@ describe('hx-delete attribute', function() {
       xhr.respond(200, {}, 'Deleted!')
     })
 
-    var btn = make('<button data-hx-delete="/test">Click Me!</button>')
+    const btn = make('<button data-hx-delete="/test">Click Me!</button>')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Deleted!')
