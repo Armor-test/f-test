@@ -9,14 +9,14 @@ describe('hx-on:* attribute', function() {
   })
 
   it('can handle basic events w/ no other attributes', function() {
-    var btn = make("<button hx-on:click='window.foo = true'>Foo</button>")
+    const btn = make("<button hx-on:click='window.foo = true'>Foo</button>")
     btn.click()
     window.foo.should.equal(true)
     delete window.foo
   })
 
   it('can use dashes rather than colons', function() {
-    var btn = make("<button hx-on-click='window.foo = true'>Foo</button>")
+    const btn = make("<button hx-on-click='window.foo = true'>Foo</button>")
     btn.click()
     window.foo.should.equal(true)
     delete window.foo
@@ -24,10 +24,10 @@ describe('hx-on:* attribute', function() {
 
   it('can modify a parameter via htmx:configRequest', function() {
     this.server.respondWith('POST', '/test', function(xhr) {
-      var params = parseParams(xhr.requestBody)
+      const params = parseParams(xhr.requestBody)
       xhr.respond(200, {}, params.foo)
     })
-    var btn = make("<button hx-on:htmx:config-request='event.detail.parameters.foo = \"bar\"' hx-post='/test'>Foo</button>")
+    const btn = make("<button hx-on:htmx:config-request='event.detail.parameters.foo = \"bar\"' hx-post='/test'>Foo</button>")
     btn.click()
     this.server.respond()
     btn.innerText.should.equal('bar')
@@ -35,10 +35,10 @@ describe('hx-on:* attribute', function() {
 
   it('can modify a parameter via htmx:configRequest with dashes', function() {
     this.server.respondWith('POST', '/test', function(xhr) {
-      var params = parseParams(xhr.requestBody)
+      const params = parseParams(xhr.requestBody)
       xhr.respond(200, {}, params.foo)
     })
-    var btn = make("<button hx-on-htmx-config-request='event.detail.parameters.foo = \"bar\"' hx-post='/test'>Foo</button>")
+    const btn = make("<button hx-on-htmx-config-request='event.detail.parameters.foo = \"bar\"' hx-post='/test'>Foo</button>")
     btn.click()
     this.server.respond()
     btn.innerText.should.equal('bar')
@@ -46,10 +46,10 @@ describe('hx-on:* attribute', function() {
 
   it('expands :: shorthand into htmx:', function() {
     this.server.respondWith('POST', '/test', function(xhr) {
-      var params = parseParams(xhr.requestBody)
+      const params = parseParams(xhr.requestBody)
       xhr.respond(200, {}, params.foo)
     })
-    var btn = make("<button hx-on::config-request='event.detail.parameters.foo = \"bar\"' hx-post='/test'>Foo</button>")
+    const btn = make("<button hx-on::config-request='event.detail.parameters.foo = \"bar\"' hx-post='/test'>Foo</button>")
     btn.click()
     this.server.respond()
     btn.innerText.should.equal('bar')
@@ -57,10 +57,10 @@ describe('hx-on:* attribute', function() {
 
   it('expands -- shorthand into htmx:', function() {
     this.server.respondWith('POST', '/test', function(xhr) {
-      var params = parseParams(xhr.requestBody)
+      const params = parseParams(xhr.requestBody)
       xhr.respond(200, {}, params.foo)
     })
-    var btn = make("<button hx-on--config-request='event.detail.parameters.foo = \"bar\"' hx-post='/test'>Foo</button>")
+    const btn = make("<button hx-on--config-request='event.detail.parameters.foo = \"bar\"' hx-post='/test'>Foo</button>")
     btn.click()
     this.server.respond()
     btn.innerText.should.equal('bar')
@@ -70,7 +70,7 @@ describe('hx-on:* attribute', function() {
     this.server.respondWith('POST', '/test', function(xhr) {
       xhr.respond(200, {}, '<button>Bar</button>')
     })
-    var btn = make("<button hx-on:htmx:config-request='event.preventDefault()' hx-post='/test' hx-swap='outerHTML'>Foo</button>")
+    const btn = make("<button hx-on:htmx:config-request='event.preventDefault()' hx-post='/test' hx-swap='outerHTML'>Foo</button>")
     btn.click()
     this.server.respond()
     btn.innerText.should.equal('Foo')
@@ -78,10 +78,10 @@ describe('hx-on:* attribute', function() {
 
   it('can respond to data-hx-on', function() {
     this.server.respondWith('POST', '/test', function(xhr) {
-      var params = parseParams(xhr.requestBody)
+      const params = parseParams(xhr.requestBody)
       xhr.respond(200, {}, params.foo)
     })
-    var btn = make("<button data-hx-on:htmx:config-request='event.detail.parameters.foo = \"bar\"' hx-post='/test'>Foo</button>")
+    const btn = make("<button data-hx-on:htmx:config-request='event.detail.parameters.foo = \"bar\"' hx-post='/test'>Foo</button>")
     btn.click()
     this.server.respond()
     btn.innerText.should.equal('bar')
@@ -91,7 +91,7 @@ describe('hx-on:* attribute', function() {
     this.server.respondWith('POST', '/test', function(xhr) {
       xhr.respond(200, {}, 'foo')
     })
-    var btn = make("<button hx-on:htmx:config-request='window.elt = this' hx-post='/test'>Foo</button>")
+    const btn = make("<button hx-on:htmx:config-request='window.elt = this' hx-post='/test'>Foo</button>")
     btn.click()
     this.server.respond()
     btn.innerText.should.equal('foo')
@@ -103,12 +103,12 @@ describe('hx-on:* attribute', function() {
     this.server.respondWith('POST', '/test', function(xhr) {
       xhr.respond(200, {}, 'foo')
     })
-    var btn = make("<button hx-on:htmx:config-request='window.elt = {foo: true,\n" +
+    const btn = make("<button hx-on:htmx:config-request='window.elt = {foo: true,\n" +
             "                                                             bar: false}' hx-post='/test'>Foo</button>")
     btn.click()
     this.server.respond()
     btn.innerText.should.equal('foo')
-    var obj = { foo: true, bar: false }
+    const obj = { foo: true, bar: false }
     obj.should.deep.equal(window.elt)
     delete window.elt
   })
@@ -117,7 +117,7 @@ describe('hx-on:* attribute', function() {
     this.server.respondWith('POST', '/test', function(xhr) {
       xhr.respond(200, {}, 'foo')
     })
-    var btn = make("<button hx-on:htmx:config-request='window.elt = {foo: true,\n" +
+    const btn = make("<button hx-on:htmx:config-request='window.elt = {foo: true,\n" +
             "                                                             bar: false}\n'" +
             " hx-on:htmx:after-request='window.foo = true'" +
             " hx-post='/test'>Foo</button>")
@@ -125,7 +125,7 @@ describe('hx-on:* attribute', function() {
     this.server.respond()
     btn.innerText.should.equal('foo')
 
-    var obj = { foo: true, bar: false }
+    const obj = { foo: true, bar: false }
     obj.should.deep.equal(window.elt)
     delete window.elt
 
@@ -138,7 +138,7 @@ describe('hx-on:* attribute', function() {
     this.server.respondWith('POST', '/test', function(xhr) {
       xhr.respond(200, {}, "<button id='foo' hx-on:click=\"window.tempCount++;\">increment</button>")
     })
-    var div = make("<div hx-post='/test'>Foo</div>")
+    const div = make("<div hx-post='/test'>Foo</div>")
 
     // get response
     div.click()
@@ -160,13 +160,13 @@ describe('hx-on:* attribute', function() {
   })
 
   it('is not evaluated when allowEval is false', function() {
-    var calledEvent = false
-    var handler = htmx.on('htmx:evalDisallowedError', function() {
+    const calledEvent = false
+    const handler = htmx.on('htmx:evalDisallowedError', function() {
       calledEvent = true
     })
     htmx.config.allowEval = false
     try {
-      var btn = make("<button hx-on:click='window.foo = true'>Foo</button>")
+      const btn = make("<button hx-on:click='window.foo = true'>Foo</button>")
       btn.click()
       should.not.exist(window.foo)
     } finally {
@@ -189,15 +189,15 @@ describe('hx-on:* attribute', function() {
             '</div>'
     )
 
-    var fooBtn = byId('foo')
+    const fooBtn = byId('foo')
     fooBtn.click()
     window.foo.should.equal(true)
 
-    var swapBtn = byId('swap')
+    const swapBtn = byId('swap')
     swapBtn.click()
     this.server.respond()
 
-    var barBtn = byId('bar')
+    const barBtn = byId('bar')
     barBtn.click()
     window.bar.should.equal(true)
 
@@ -209,7 +209,7 @@ describe('hx-on:* attribute', function() {
     // setup
     window.foo = 0
     window.bar = 0
-    var div = make("<div hx-on:increment-foo='window.foo++' hx-on:increment-bar='window.bar++'>Foo</div>")
+    const div = make("<div hx-on:increment-foo='window.foo++' hx-on:increment-bar='window.bar++'>Foo</div>")
     make('<div>Another Div</div>') // sole purpose is to update the DOM
 
     // check there is just one handler against each event
