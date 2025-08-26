@@ -5,7 +5,7 @@ if (htmx.version && !htmx.version.startsWith("1.")) {
 htmx.defineExtension('rails-method', {
     onEvent: function (name, evt) {
         if (name === "configRequest.htmx") {
-            var methodOverride = evt.detail.headers['X-HTTP-Method-Override'];
+            const methodOverride = evt.detail.headers['X-HTTP-Method-Override'];
             if (methodOverride) {
                 evt.detail.parameters['_method'] = methodOverride;
             }
