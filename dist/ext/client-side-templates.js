@@ -5,11 +5,11 @@ if (htmx.version && !htmx.version.startsWith("1.")) {
 htmx.defineExtension('client-side-templates', {
     transformResponse : function(text, xhr, elt) {
 
-        var mustacheTemplate = htmx.closest(elt, "[mustache-template]");
+        const mustacheTemplate = htmx.closest(elt, "[mustache-template]");
         if (mustacheTemplate) {
-            var data = JSON.parse(text);
-            var templateId = mustacheTemplate.getAttribute('mustache-template');
-            var template = htmx.find("#" + templateId);
+            const data = JSON.parse(text);
+            const templateId = mustacheTemplate.getAttribute('mustache-template');
+            const template = htmx.find("#" + templateId);
             if (template) {
                 return Mustache.render(template.innerHTML, data);
             } else {
@@ -17,11 +17,11 @@ htmx.defineExtension('client-side-templates', {
             }
         }
 
-        var mustacheArrayTemplate = htmx.closest(elt, "[mustache-array-template]");
+        const mustacheArrayTemplate = htmx.closest(elt, "[mustache-array-template]");
         if (mustacheArrayTemplate) {
-            var data = JSON.parse(text);
-            var templateId = mustacheArrayTemplate.getAttribute('mustache-array-template');
-            var template = htmx.find("#" + templateId);
+            const data = JSON.parse(text);
+            const templateId = mustacheArrayTemplate.getAttribute('mustache-array-template');
+            const template = htmx.find("#" + templateId);
             if (template) {
                 return Mustache.render(template.innerHTML, {"data": data });
             } else {
@@ -29,12 +29,12 @@ htmx.defineExtension('client-side-templates', {
             }
         }
 
-        var handlebarsTemplate = htmx.closest(elt, "[handlebars-template]");
+        const handlebarsTemplate = htmx.closest(elt, "[handlebars-template]");
         if (handlebarsTemplate) {
-            var data = JSON.parse(text);
-            var templateId = handlebarsTemplate.getAttribute('handlebars-template');
-            var templateElement = htmx.find('#' + templateId).innerHTML;
-            var renderTemplate = Handlebars.compile(templateElement);
+            const data = JSON.parse(text);
+            const templateId = handlebarsTemplate.getAttribute('handlebars-template');
+            const templateElement = htmx.find('#' + templateId).innerHTML;
+            const renderTemplate = Handlebars.compile(templateElement);
             if (renderTemplate) {
                 return renderTemplate(data);
             } else {
@@ -42,12 +42,12 @@ htmx.defineExtension('client-side-templates', {
             }
         }
 
-        var handlebarsArrayTemplate = htmx.closest(elt, "[handlebars-array-template]");
+        const handlebarsArrayTemplate = htmx.closest(elt, "[handlebars-array-template]");
         if (handlebarsArrayTemplate) {
-            var data = JSON.parse(text);
-            var templateId = handlebarsArrayTemplate.getAttribute('handlebars-array-template');
-            var templateElement = htmx.find('#' + templateId).innerHTML;
-            var renderTemplate = Handlebars.compile(templateElement);
+            const data = JSON.parse(text);
+            const templateId = handlebarsArrayTemplate.getAttribute('handlebars-array-template');
+            const templateElement = htmx.find('#' + templateId).innerHTML;
+            const renderTemplate = Handlebars.compile(templateElement);
             if (renderTemplate) {
                 return renderTemplate(data);
             } else {
@@ -55,11 +55,11 @@ htmx.defineExtension('client-side-templates', {
             }
         }
 
-        var nunjucksTemplate = htmx.closest(elt, "[nunjucks-template]");
+        const nunjucksTemplate = htmx.closest(elt, "[nunjucks-template]");
         if (nunjucksTemplate) {
-            var data = JSON.parse(text);
-            var templateName = nunjucksTemplate.getAttribute('nunjucks-template');
-            var template = htmx.find('#' + templateName);
+            const data = JSON.parse(text);
+            const templateName = nunjucksTemplate.getAttribute('nunjucks-template');
+            const template = htmx.find('#' + templateName);
             if (template) {
                 return nunjucks.renderString(template.innerHTML, data);
             } else {
@@ -67,28 +67,28 @@ htmx.defineExtension('client-side-templates', {
             }
         }
 
-        var xsltTemplate = htmx.closest(elt, "[xslt-template]");
+        const xsltTemplate = htmx.closest(elt, "[xslt-template]");
         if (xsltTemplate) {
-            var templateId = xsltTemplate.getAttribute('xslt-template');
-            var template = htmx.find("#" + templateId);
+            const templateId = xsltTemplate.getAttribute('xslt-template');
+            const template = htmx.find("#" + templateId);
             if (template) {
-              var content = template.innerHTML ? new DOMParser().parseFromString(template.innerHTML, 'application/xml')
+              const content = template.innerHTML ? new DOMParser().parseFromString(template.innerHTML, 'application/xml')
                                                : template.contentDocument;
-              var processor = new XSLTProcessor();
+              const processor = new XSLTProcessor();
               processor.importStylesheet(content);
-              var data = new DOMParser().parseFromString(text, "application/xml");
-              var frag = processor.transformToFragment(data, document);
+              const data = new DOMParser().parseFromString(text, "application/xml");
+              const frag = processor.transformToFragment(data, document);
               return new XMLSerializer().serializeToString(frag);
             } else {
               throw "Unknown XSLT template: " + templateId;
             }
         }
 
-          var nunjucksArrayTemplate = htmx.closest(elt, "[nunjucks-array-template]");
+          const nunjucksArrayTemplate = htmx.closest(elt, "[nunjucks-array-template]");
           if (nunjucksArrayTemplate) {
-              var data = JSON.parse(text);
-              var templateName = nunjucksArrayTemplate.getAttribute('nunjucks-array-template');
-              var template = htmx.find('#' + templateName);
+              const data = JSON.parse(text);
+              const templateName = nunjucksArrayTemplate.getAttribute('nunjucks-array-template');
+              const template = htmx.find('#' + templateName);
               if (template) {
                   return nunjucks.renderString(template.innerHTML, {"data": data});
               } else {
