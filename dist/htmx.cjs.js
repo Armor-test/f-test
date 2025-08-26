@@ -1,4 +1,4 @@
-var htmx = (function() {
+const htmx = (function() {
   'use strict'
 
   // Public API
@@ -447,7 +447,7 @@ var htmx = (function() {
   function getAttributeValueWithDisinheritance(initialElement, ancestor, attributeName) {
     const attributeValue = getAttributeValue(ancestor, attributeName)
     const disinherit = getAttributeValue(ancestor, 'hx-disinherit')
-    var inherit = getAttributeValue(ancestor, 'hx-inherit')
+    const inherit = getAttributeValue(ancestor, 'hx-inherit')
     if (initialElement !== ancestor) {
       if (htmx.config.disableInheritance) {
         if (inherit && (inherit === '*' || inherit.split(' ').indexOf(attributeName) >= 0)) {
@@ -607,7 +607,7 @@ var htmx = (function() {
       fragment.title = doc.title
 
       // for legacy reasons we support a title tag at the root level of non-body responses, so we need to handle it
-      var titleElement = fragment.querySelector('title')
+      const titleElement = fragment.querySelector('title')
       if (titleElement && titleElement.parentNode === fragment) {
         titleElement.remove()
         fragment.title = titleElement.innerText
@@ -1205,7 +1205,7 @@ var htmx = (function() {
    * @param {boolean} global
    * @returns {Element}
    */
-  var scanForwardQuery = function(start, match, global) {
+  const scanForwardQuery = function(start, match, global) {
     const results = asParentNode(getRootNode(start, global)).querySelectorAll(match)
     for (let i = 0; i < results.length; i++) {
       const elt = results[i]
@@ -1221,7 +1221,7 @@ var htmx = (function() {
    * @param {boolean} global
    * @returns {Element}
    */
-  var scanBackwardsQuery = function(start, match, global) {
+  const scanBackwardsQuery = function(start, match, global) {
     const results = asParentNode(getRootNode(start, global)).querySelectorAll(match)
     for (let i = results.length - 1; i >= 0; i--) {
       const elt = results[i]
@@ -1820,7 +1820,7 @@ var htmx = (function() {
         swapDelete(target)
         return
       default:
-        var extensions = getExtensions(elt)
+        const extensions = getExtensions(elt)
         for (let i = 0; i < extensions.length; i++) {
           const ext = extensions[i]
           try {
@@ -1855,7 +1855,7 @@ var htmx = (function() {
    * @param {Node|Document} [rootNode]
    */
   function findAndSwapOobElements(fragment, settleInfo, rootNode) {
-    var oobElts = findAll(fragment, '[hx-swap-oob], [data-hx-swap-oob]')
+    const oobElts = findAll(fragment, '[hx-swap-oob], [data-hx-swap-oob]')
     forEach(oobElts, function(oobElement) {
       if (htmx.config.allowNestedOobSwaps || oobElement.parentElement === null) {
         const oobValue = getAttributeValue(oobElement, 'hx-swap-oob')
@@ -2065,14 +2065,14 @@ var htmx = (function() {
     let position = 0
     while (position < str.length) {
       if (SYMBOL_START.exec(str.charAt(position))) {
-        var startPosition = position
+        const startPosition = position
         while (SYMBOL_CONT.exec(str.charAt(position + 1))) {
           position++
         }
         tokens.push(str.substring(startPosition, position + 1))
       } else if (STRINGISH_START.indexOf(str.charAt(position)) !== -1) {
         const startChar = str.charAt(position)
-        var startPosition = position
+        const startPosition = position
         position++
         while (position < str.length && str.charAt(position) !== startChar) {
           if (str.charAt(position) === '\\') {
@@ -2205,7 +2205,7 @@ var htmx = (function() {
           consumeUntil(tokens, NOT_WHITESPACE)
           every.pollInterval = parseInterval(consumeUntil(tokens, /[,\[\s]/))
           consumeUntil(tokens, NOT_WHITESPACE)
-          var eventFilter = maybeGenerateConditional(elt, tokens, 'event')
+          const eventFilter = maybeGenerateConditional(elt, tokens, 'event')
           if (eventFilter) {
             every.eventFilter = eventFilter
           }
@@ -2213,7 +2213,7 @@ var htmx = (function() {
         } else {
           /** @type HtmxTriggerSpecification */
           const triggerSpec = { trigger }
-          var eventFilter = maybeGenerateConditional(elt, tokens, 'event')
+          const eventFilter = maybeGenerateConditional(elt, tokens, 'event')
           if (eventFilter) {
             triggerSpec.eventFilter = eventFilter
           }
@@ -2232,9 +2232,9 @@ var htmx = (function() {
             } else if (token === 'from' && tokens[0] === ':') {
               tokens.shift()
               if (COMBINED_SELECTOR_START.test(tokens[0])) {
-                var from_arg = consumeCSSSelector(tokens)
+                const from_arg = consumeCSSSelector(tokens)
               } else {
-                var from_arg = consumeUntil(tokens, WHITESPACE_OR_COMMA)
+                const from_arg = consumeUntil(tokens, WHITESPACE_OR_COMMA)
                 if (from_arg === 'closest' || from_arg === 'find' || from_arg === 'next' || from_arg === 'previous') {
                   tokens.shift()
                   const selector = consumeCSSSelector(tokens)
@@ -2756,7 +2756,7 @@ var htmx = (function() {
       for (const e in extensions) {
         const extension = extensions[e]
         if (extension.getSelectors) {
-          var selectors = extension.getSelectors()
+          const selectors = extension.getSelectors()
           if (selectors) {
             extensionSelectors.push(selectors)
           }
@@ -3690,17 +3690,17 @@ var htmx = (function() {
             swapSpec.ignoreTitle = value.slice(12) === 'true'
           } else if (value.indexOf('scroll:') === 0) {
             const scrollSpec = value.slice(7)
-            var splitSpec = scrollSpec.split(':')
+            const splitSpec = scrollSpec.split(':')
             const scrollVal = splitSpec.pop()
-            var selectorVal = splitSpec.length > 0 ? splitSpec.join(':') : null
+            const selectorVal = splitSpec.length > 0 ? splitSpec.join(':') : null
             // @ts-ignore
             swapSpec.scroll = scrollVal
             swapSpec.scrollTarget = selectorVal
           } else if (value.indexOf('show:') === 0) {
             const showSpec = value.slice(5)
-            var splitSpec = showSpec.split(':')
+            const splitSpec = showSpec.split(':')
             const showVal = splitSpec.pop()
-            var selectorVal = splitSpec.length > 0 ? splitSpec.join(':') : null
+            const selectorVal = splitSpec.length > 0 ? splitSpec.join(':') : null
             swapSpec.show = showVal
             swapSpec.showTarget = selectorVal
           } else if (value.indexOf('focus-scroll:') === 0) {
@@ -3769,7 +3769,7 @@ var htmx = (function() {
     const first = content[0]
     const last = content[content.length - 1]
     if (swapSpec.scroll) {
-      var target = null
+      const target = null
       if (swapSpec.scrollTarget) {
         target = asElement(querySelectorExt(first, swapSpec.scrollTarget))
       }
@@ -3783,7 +3783,7 @@ var htmx = (function() {
       }
     }
     if (swapSpec.show) {
-      var target = null
+      const target = null
       if (swapSpec.showTarget) {
         let targetStr = swapSpec.showTarget
         if (swapSpec.showTarget === 'window') {
@@ -4167,7 +4167,7 @@ var htmx = (function() {
     let reject = null
     etc = etc != null ? etc : {}
     if (etc.returnPromise && typeof Promise !== 'undefined') {
-      var promise = new Promise(function(_resolve, _reject) {
+      const promise = new Promise(function(_resolve, _reject) {
         resolve = _resolve
         reject = _reject
       })
@@ -4305,7 +4305,7 @@ var htmx = (function() {
     }
     const promptQuestion = getClosestAttributeValue(elt, 'hx-prompt')
     if (promptQuestion) {
-      var promptResponse = prompt(promptQuestion)
+      const promptResponse = prompt(promptQuestion)
       // prompt returns null if cancelled and empty string if accepted with no entry
       if (promptResponse === null ||
       !triggerEvent(elt, 'htmx:prompt', { prompt: promptResponse, target })) {
@@ -4520,8 +4520,8 @@ var htmx = (function() {
       endRequestLock()
       return promise
     }
-    var indicators = addRequestIndicatorClasses(elt)
-    var disableElts = disableElements(elt)
+    const indicators = addRequestIndicatorClasses(elt)
+    const disableElts = disableElements(elt)
 
     forEach(['loadstart', 'loadend', 'progress', 'abort'], function(eventName) {
       forEach([xhr, xhr.upload], function(target) {
@@ -4637,7 +4637,7 @@ var htmx = (function() {
    * @return {boolean}
    */
   function codeMatches(responseHandlingConfig, status) {
-    var regExp = new RegExp(responseHandlingConfig.code)
+    const regExp = new RegExp(responseHandlingConfig.code)
     return regExp.test(status.toString(10))
   }
 
@@ -4646,9 +4646,9 @@ var htmx = (function() {
    * @return {HtmxResponseHandlingConfig}
    */
   function resolveResponseHandling(xhr) {
-    for (var i = 0; i < htmx.config.responseHandling.length; i++) {
+    for (const i = 0; i < htmx.config.responseHandling.length; i++) {
       /** @type HtmxResponseHandlingConfig */
-      var responseHandlingElement = htmx.config.responseHandling[i]
+      const responseHandlingElement = htmx.config.responseHandling[i]
       if (codeMatches(responseHandlingElement, xhr.status)) {
         return responseHandlingElement
       }
@@ -4693,7 +4693,7 @@ var htmx = (function() {
       saveCurrentPageToHistory()
       let redirectPath = xhr.getResponseHeader('HX-Location')
       /** @type {HtmxAjaxHelperContext&{path:string}} */
-      var redirectSwapSpec
+      const redirectSwapSpec
       if (redirectPath.indexOf('{') === 0) {
         redirectSwapSpec = parseJSON(redirectPath)
         // what's the best way to throw an error if the user didn't include this
@@ -4739,7 +4739,7 @@ var htmx = (function() {
     if (responseHandling.target) {
       responseInfo.target = asElement(querySelectorExt(elt, responseHandling.target))
     }
-    var swapOverride = etc.swapOverride
+    const swapOverride = etc.swapOverride
     if (swapOverride == null && responseHandling.swapOverride) {
       swapOverride = responseHandling.swapOverride
     }
@@ -4756,9 +4756,9 @@ var htmx = (function() {
       swapOverride = xhr.getResponseHeader('HX-Reswap')
     }
 
-    var serverResponse = xhr.response
+    const serverResponse = xhr.response
     /** @type HtmxBeforeSwapDetails */
-    var beforeSwapDetails = mergeObjects({
+    const beforeSwapDetails = mergeObjects({
       shouldSwap,
       serverResponse,
       isError,
@@ -4796,7 +4796,7 @@ var htmx = (function() {
         saveCurrentPageToHistory()
       }
 
-      var swapSpec = getSwapSpecification(elt, swapOverride)
+      const swapSpec = getSwapSpecification(elt, swapOverride)
 
       if (!swapSpec.hasOwnProperty('ignoreTitle')) {
         swapSpec.ignoreTitle = ignoreTitle
@@ -4991,7 +4991,7 @@ var htmx = (function() {
   //= ===================================================================
   // Initialization
   //= ===================================================================
-  var isReady = false
+  const isReady = false
   getDocument().addEventListener('DOMContentLoaded', function() {
     isReady = true
   })
@@ -5259,4 +5259,4 @@ var htmx = (function() {
  * @property {(xhr: XMLHttpRequest, parameters: FormData, elt: Node) => *|string|null} encodeParameters
  * @property {() => string[]|null} getSelectors
  */
-module.exports = htmx;
+export default = htmx;
