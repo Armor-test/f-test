@@ -13,7 +13,7 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 	}
 
 	/** @type {import("../htmx").HtmxInternalApi} */
-	var api;
+	const api;
 
 	htmx.defineExtension("sse", {
 
@@ -42,11 +42,11 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 		 */
 		onEvent: function(name, evt) {
 
-			var parent = evt.target || evt.detail.elt;
+			const parent = evt.target || evt.detail.elt;
 			switch (name) {
 
 				case "htmx:beforeCleanupElement":
-					var internalData = api.getInternalData(parent)
+					const internalData = api.getInternalData(parent)
 					// Try to remove remove an EventSource when elements are removed
 					if (internalData.sseEventSource) {
 						internalData.sseEventSource.close();
@@ -82,11 +82,11 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 	}
 
 	function getLegacySSEURL(elt) {
-		var legacySSEValue = api.getAttributeValue(elt, "hx-sse");
+		const legacySSEValue = api.getAttributeValue(elt, "hx-sse");
 		if (legacySSEValue) {
-			var values = splitOnWhitespace(legacySSEValue);
-			for (var i = 0; i < values.length; i++) {
-				var value = values[i].split(/:(.+)/);
+			const values = splitOnWhitespace(legacySSEValue);
+			for (const i = 0; i < values.length; i++) {
+				const value = values[i].split(/:(.+)/);
 				if (value[0] === "connect") {
 					return value[1];
 				}
@@ -95,12 +95,12 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 	}
 
 	function getLegacySSESwaps(elt) {
-		var legacySSEValue = api.getAttributeValue(elt, "hx-sse");
-		var returnArr = [];
+		const legacySSEValue = api.getAttributeValue(elt, "hx-sse");
+		const returnArr = [];
 		if (legacySSEValue != null) {
-			var values = splitOnWhitespace(legacySSEValue);
-			for (var i = 0; i < values.length; i++) {
-				var value = values[i].split(/:(.+)/);
+			const values = splitOnWhitespace(legacySSEValue);
+			for (const i = 0; i < values.length; i++) {
+				const value = values[i].split(/:(.+)/);
 				if (value[0] === "swap") {
 					returnArr.push(value[1]);
 				}
@@ -120,26 +120,26 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 		// Add message handlers for every `sse-swap` attribute
 		queryAttributeOnThisOrChildren(elt, "sse-swap").forEach(function (child) {
 			// Find closest existing event source
-			var sourceElement = api.getClosestMatch(child, hasEventSource);
+			const sourceElement = api.getClosestMatch(child, hasEventSource);
 			if (sourceElement == null) {
 				// api.triggerErrorEvent(elt, "htmx:noSSESourceError")
 				return null; // no eventsource in parentage, orphaned element
 			}
 
 			// Set internalData and source
-			var internalData = api.getInternalData(sourceElement);
-			var source = internalData.sseEventSource;
+			const internalData = api.getInternalData(sourceElement);
+			const source = internalData.sseEventSource;
 
-			var sseSwapAttr = api.getAttributeValue(child, "sse-swap");
+			const sseSwapAttr = api.getAttributeValue(child, "sse-swap");
 			if (sseSwapAttr) {
-				var sseEventNames = sseSwapAttr.split(",");
+				const sseEventNames = sseSwapAttr.split(",");
 			} else {
-				var sseEventNames = getLegacySSESwaps(child);
+				const sseEventNames = getLegacySSESwaps(child);
 			}
 
-			for (var i = 0; i < sseEventNames.length; i++) {
-				var sseEventName = sseEventNames[i].trim();
-				var listener = function(event) {
+			for (const i = 0; i < sseEventNames.length; i++) {
+				const sseEventName = sseEventNames[i].trim();
+				const listener = function(event) {
 
 					// If the source is missing then close SSE
 					if (maybeCloseSSESource(sourceElement)) {
@@ -169,17 +169,17 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 		// Add message handlers for every `hx-trigger="sse:*"` attribute
 		queryAttributeOnThisOrChildren(elt, "hx-trigger").forEach(function(child) {
 			// Find closest existing event source
-			var sourceElement = api.getClosestMatch(child, hasEventSource);
+			const sourceElement = api.getClosestMatch(child, hasEventSource);
 			if (sourceElement == null) {
 				// api.triggerErrorEvent(elt, "htmx:noSSESourceError")
 				return null; // no eventsource in parentage, orphaned element
 			}
 
 			// Set internalData and source
-			var internalData = api.getInternalData(sourceElement);
-			var source = internalData.sseEventSource;
+			const internalData = api.getInternalData(sourceElement);
+			const source = internalData.sseEventSource;
 
-			var sseEventName = api.getAttributeValue(child, "hx-trigger");
+			const sseEventName = api.getAttributeValue(child, "hx-trigger");
 			if (sseEventName == null) {
 				return;
 			}
@@ -192,7 +192,7 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 			// remove the sse: prefix from here on out
 			sseEventName = sseEventName.substr(4);
 
-			var listener = function() {
+			const listener = function() {
 				if (maybeCloseSSESource(sourceElement)) {
 					return
 				}
@@ -220,7 +220,7 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 
 		// handle extension source creation attribute
 		queryAttributeOnThisOrChildren(elt, "sse-connect").forEach(function(child) {
-			var sseURL = api.getAttributeValue(child, "sse-connect");
+			const sseURL = api.getAttributeValue(child, "sse-connect");
 			if (sseURL == null) {
 				return;
 			}
@@ -230,7 +230,7 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 
 		// handle legacy sse, remove for HTMX2
 		queryAttributeOnThisOrChildren(elt, "hx-sse").forEach(function(child) {
-			var sseURL = getLegacySSEURL(child);
+			const sseURL = getLegacySSEURL(child);
 			if (sseURL == null) {
 				return;
 			}
@@ -242,7 +242,7 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 	}
 
 	function ensureEventSource(elt, url, retryCount) {
-		var source = htmx.createEventSource(url);
+		const source = htmx.createEventSource(url);
 
 		source.onerror = function(err) {
 
@@ -257,7 +257,7 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 			// Otherwise, try to reconnect the EventSource
 			if (source.readyState === EventSource.CLOSED) {
 				retryCount = retryCount || 0;
-				var timeout = Math.random() * (2 ^ retryCount) * 500;
+				const timeout = Math.random() * (2 ^ retryCount) * 500;
 				window.setTimeout(function() {
 					ensureEventSourceOnElement(elt, Math.min(7, retryCount + 1));
 				}, timeout);
@@ -280,7 +280,7 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 	 */
 	function maybeCloseSSESource(elt) {
 		if (!api.bodyContains(elt)) {
-			var source = api.getInternalData(elt).sseEventSource;
+			const source = api.getInternalData(elt).sseEventSource;
 			if (source != undefined) {
 				source.close();
 				// source = null
@@ -298,7 +298,7 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 	 */
 	function queryAttributeOnThisOrChildren(elt, attributeName) {
 
-		var result = [];
+		const result = [];
 
 		// If the parent element also contains the requested attribute, then add it to the results too.
 		if (api.hasAttribute(elt, attributeName)) {
@@ -323,9 +323,9 @@ This extension adds support for Server Sent Events to htmx.  See /www/extensions
 			content = extension.transformResponse(content, null, elt);
 		});
 
-		var swapSpec = api.getSwapSpecification(elt);
-		var target = api.getTarget(elt);
-		var settleInfo = api.makeSettleInfo(elt);
+		const swapSpec = api.getSwapSpecification(elt);
+		const target = api.getTarget(elt);
+		const settleInfo = api.makeSettleInfo(elt);
 
 		api.selectAndSwap(swapSpec.swapStyle, target, elt, content, settleInfo);
 
