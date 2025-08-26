@@ -1,5 +1,5 @@
 describe('hx-history attribute', function() {
-  var HTMX_HISTORY_CACHE_NAME = 'htmx-history-cache'
+  const HTMX_HISTORY_CACHE_NAME = 'htmx-history-cache'
 
   beforeEach(function() {
     this.server = makeServer()
@@ -21,7 +21,7 @@ describe('hx-history attribute', function() {
 
     byId('d1').click()
     this.server.respond()
-    var workArea = getWorkArea()
+    const workArea = getWorkArea()
     workArea.textContent.should.equal('test1')
 
     byId('d2').click()
@@ -33,7 +33,7 @@ describe('hx-history attribute', function() {
     workArea.textContent.should.equal('test3')
 
     // embargoed content should NOT be in the localStorage cache
-    var cache = JSON.parse(localStorage.getItem(HTMX_HISTORY_CACHE_NAME))
+    const cache = JSON.parse(localStorage.getItem(HTMX_HISTORY_CACHE_NAME))
     cache.length.should.equal(2)
 
     // on history navigation, embargoed content is retrieved from server
