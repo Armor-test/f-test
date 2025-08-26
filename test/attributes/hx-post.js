@@ -14,7 +14,7 @@ describe('hx-post attribute', function() {
       xhr.respond(200, {}, 'Posted!')
     })
 
-    var btn = make('<button hx-post="/test">Click Me!</button>')
+    const btn = make('<button hx-post="/test">Click Me!</button>')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Posted!')
@@ -26,7 +26,7 @@ describe('hx-post attribute', function() {
       xhr.respond(200, {}, 'Posted!')
     })
 
-    var btn = make('<button data-hx-post="/test">Click Me!</button>')
+    const btn = make('<button data-hx-post="/test">Click Me!</button>')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Posted!')
