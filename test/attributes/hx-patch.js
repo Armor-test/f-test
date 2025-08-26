@@ -13,7 +13,7 @@ describe('hx-patch attribute', function() {
       xhr.respond(200, {}, 'Patched!')
     })
 
-    var btn = make('<button hx-patch="/test">Click Me!</button>')
+    const btn = make('<button hx-patch="/test">Click Me!</button>')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Patched!')
@@ -24,7 +24,7 @@ describe('hx-patch attribute', function() {
       xhr.respond(200, {}, 'Patched!')
     })
 
-    var btn = make('<button data-hx-patch="/test">Click Me!</button>')
+    const btn = make('<button data-hx-patch="/test">Click Me!</button>')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Patched!')
