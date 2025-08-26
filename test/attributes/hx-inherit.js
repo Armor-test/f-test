@@ -12,11 +12,11 @@ describe('hx-inherit attribute', function() {
 
   it('can disable inheritance', function() {
     this.server.respondWith('GET', '/test', 'Test')
-    var div = make('<div hx-target="#cta">' +
+    const div = make('<div hx-target="#cta">' +
             '<button id="btn1" hx-get="/test"></button>' +
             '<span id="cta">Click Me!</span>' +
             '</div>')
-    var btn = byId('btn1')
+    const btn = byId('btn1')
     btn.click()
     this.server.respond()
     btn.innerText.should.equal('Test')
@@ -24,12 +24,12 @@ describe('hx-inherit attribute', function() {
 
   it('can enable inheritance for all', function() {
     this.server.respondWith('GET', '/test', 'Test')
-    var div = make('<div hx-target="#cta" hx-inherit="*">' +
+    const div = make('<div hx-target="#cta" hx-inherit="*">' +
             '<button id="btn1" hx-get="/test"></button>' +
             '<span id="cta">Click Me!</span>' +
             '</div>')
-    var btn = byId('btn1')
-    var span = byId('cta')
+    const btn = byId('btn1')
+    const span = byId('cta')
     btn.click()
     this.server.respond()
     btn.innerText.should.equal('')
@@ -38,12 +38,12 @@ describe('hx-inherit attribute', function() {
 
   it('can enable inheritance by name', function() {
     this.server.respondWith('GET', '/test', 'Test')
-    var div = make('<div hx-target="#cta" hx-inherit="hx-target">' +
+    const div = make('<div hx-target="#cta" hx-inherit="hx-target">' +
             '<button id="btn1" hx-get="/test"></button>' +
             '<span id="cta">Click Me!</span>' +
             '</div>')
-    var btn = byId('btn1')
-    var span = byId('cta')
+    const btn = byId('btn1')
+    const span = byId('cta')
     btn.click()
     this.server.respond()
     btn.innerText.should.equal('')
@@ -52,12 +52,12 @@ describe('hx-inherit attribute', function() {
 
   it('can enable inheritance by name (bad name, no inheritance)', function() {
     this.server.respondWith('GET', '/test', 'Test')
-    var div = make('<div hx-target="#cta" hx-inherit="hx-swap">' +
+    const div = make('<div hx-target="#cta" hx-inherit="hx-swap">' +
             '<button id="btn1" hx-get="/test"></button>' +
             '<span id="cta">Click Me!</span>' +
             '</div>')
-    var btn = byId('btn1')
-    var span = byId('cta')
+    const btn = byId('btn1')
+    const span = byId('cta')
     btn.click()
     this.server.respond()
     btn.innerText.should.equal('Test')
@@ -66,12 +66,12 @@ describe('hx-inherit attribute', function() {
 
   it('can enable inheritance by name with multiple attributes', function() {
     this.server.respondWith('GET', '/test', 'Test')
-    var div = make('<div hx-target="#cta" hx-swap="outerHTML" hx-inherit="hx-target hx-swap">' +
+    const div = make('<div hx-target="#cta" hx-swap="outerHTML" hx-inherit="hx-target hx-swap">' +
             '<button id="btn1" hx-get="/test"></button>' +
             '<div id="d2"><span id="cta">Click Me!</span></div>' +
             '</div>')
-    var btn = byId('btn1')
-    var div = byId('d2')
+    const btn = byId('btn1')
+    const div = byId('d2')
     btn.click()
     this.server.respond()
     div.innerHTML.should.equal('Test')
