@@ -6,7 +6,7 @@
     }
 
     /** @type {import("../htmx").HtmxInternalApi} */
-    var api;
+    const api;
 
     htmx.defineExtension('multi-swap', {
         init: function (apiRef) {
@@ -17,13 +17,13 @@
         },
         handleSwap: function (swapStyle, target, fragment, settleInfo) {
             if (swapStyle.indexOf('multi:') === 0) {
-                var selectorToSwapStyle = {};
-                var elements = swapStyle.replace(/^multi\s*:\s*/, '').split(/\s*,\s*/);
+                const selectorToSwapStyle = {};
+                const elements = swapStyle.replace(/^multi\s*:\s*/, '').split(/\s*,\s*/);
 
                 elements.map(function (element) {
-                    var split = element.split(/\s*:\s*/);
-                    var elementSelector = split[0];
-                    var elementSwapStyle = typeof (split[1]) !== "undefined" ? split[1] : "innerHTML";
+                    const split = element.split(/\s*:\s*/);
+                    const elementSelector = split[0];
+                    const elementSwapStyle = typeof (split[1]) !== "undefined" ? split[1] : "innerHTML";
 
                     if (elementSelector.charAt(0) !== '#') {
                         console.error("HTMX multi-swap: unsupported selector '" + elementSelector + "'. Only ID selectors starting with '#' are supported.");
@@ -33,9 +33,9 @@
                     selectorToSwapStyle[elementSelector] = elementSwapStyle;
                 });
 
-                for (var selector in selectorToSwapStyle) {
-                    var swapStyle = selectorToSwapStyle[selector];
-                    var elementToSwap = fragment.querySelector(selector);
+                for (const selector in selectorToSwapStyle) {
+                    const swapStyle = selectorToSwapStyle[selector];
+                    const elementToSwap = fragment.querySelector(selector);
                     if (elementToSwap) {
                         api.oobSwap(swapStyle, elementToSwap, settleInfo);
                     } else {
