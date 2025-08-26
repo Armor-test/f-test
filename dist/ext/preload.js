@@ -18,18 +18,18 @@ htmx.defineExtension("preload", {
 		// SOME HELPER FUNCTIONS WE'LL NEED ALONG THE WAY
 
 		// attr gets the closest non-empty value from the attribute.
-		var attr = function(node, property) {
+		const attr = function(node, property) {
 			if (node == undefined) {return undefined;}
 			return node.getAttribute(property) || node.getAttribute("data-" + property) || attr(node.parentElement, property)
 		}
 
 		// load handles the actual HTTP fetch, and uses htmx.ajax in cases where we're
 		// preloading an htmx resource (this sends the same HTTP headers as a regular htmx request)
-		var load = function(node) {
+		const load = function(node) {
 
 			// Called after a successful AJAX request, to mark the
 			// content as loaded (and prevent additional AJAX calls.)
-			var done = function(html) {
+			const done = function(html) {
 				if (!node.preloadAlways) {
 					node.preloadState = "DONE"
 				}
@@ -50,7 +50,7 @@ htmx.defineExtension("preload", {
 				// so that headers match other htmx requests, then set
 				// node.preloadState = TRUE so that requests are not duplicated
 				// in the future
-				var hxGet = node.getAttribute("hx-get") || node.getAttribute("data-hx-get")
+				const hxGet = node.getAttribute("hx-get") || node.getAttribute("data-hx-get")
 				if (hxGet) {
 					htmx.ajax("GET", hxGet, {
 						source: node,
@@ -65,7 +65,7 @@ htmx.defineExtension("preload", {
 				// node.preloadState = TRUE so that requests are not duplicated
 				// in the future.
 				if (node.getAttribute("href")) {
-					var r = new XMLHttpRequest();
+					const r = new XMLHttpRequest();
 					r.open("GET", node.getAttribute("href"));
 					r.onload = function() {done(r.responseText);};
 					r.send();
@@ -76,7 +76,7 @@ htmx.defineExtension("preload", {
 
 		// This function processes a specific node and sets up event handlers.
 		// We'll search for nodes and use it below.
-		var init = function(node) {
+		const init = function(node) {
 
 			// If this node DOES NOT include a "GET" transaction, then there's nothing to do here.
 			if (node.getAttribute("href") + node.getAttribute("hx-get") + node.getAttribute("data-hx-get") == "") {
@@ -89,7 +89,7 @@ htmx.defineExtension("preload", {
 			}
 
 			// Get event name from config.
-			var on = attr(node, "preload") || "mousedown"
+			const on = attr(node, "preload") || "mousedown"
 			const always = on.indexOf("always") !== -1
 			if (always) {
 				on = on.replace('always', '').trim()
