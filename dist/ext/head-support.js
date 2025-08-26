@@ -10,7 +10,7 @@
             ".  It is recommended that you move to the version of this extension found on https://htmx.org/extensions")
     }
 
-    var api = null;
+    const api = null;
 
     function log() {
         //console.log(arguments);
@@ -21,27 +21,27 @@
         if (newContent && newContent.indexOf('<head') > -1) {
             const htmlDoc = document.createElement("html");
             // remove svgs to avoid conflicts
-            var contentWithSvgsRemoved = newContent.replace(/<svg(\s[^>]*>|>)([\s\S]*?)<\/svg>/gim, '');
+            const contentWithSvgsRemoved = newContent.replace(/<svg(\s[^>]*>|>)([\s\S]*?)<\/svg>/gim, '');
             // extract head tag
-            var headTag = contentWithSvgsRemoved.match(/(<head(\s[^>]*>|>)([\s\S]*?)<\/head>)/im);
+            const headTag = contentWithSvgsRemoved.match(/(<head(\s[^>]*>|>)([\s\S]*?)<\/head>)/im);
 
             // if the  head tag exists...
             if (headTag) {
 
-                var added = []
-                var removed = []
-                var preserved = []
-                var nodesToAppend = []
+                const added = []
+                const removed = []
+                const preserved = []
+                const nodesToAppend = []
 
                 htmlDoc.innerHTML = headTag;
-                var newHeadTag = htmlDoc.querySelector("head");
-                var currentHead = document.head;
+                const newHeadTag = htmlDoc.querySelector("head");
+                const currentHead = document.head;
 
                 if (newHeadTag == null) {
                     return;
                 } else {
                     // put all new head elements into a Map, by their outerHTML
-                    var srcToNewHeadNodes = new Map();
+                    const srcToNewHeadNodes = new Map();
                     for (const newHeadChild of newHeadTag.children) {
                         srcToNewHeadNodes.set(newHeadChild.outerHTML, newHeadChild);
                     }
@@ -50,15 +50,15 @@
 
 
                 // determine merge strategy
-                var mergeStrategy = api.getAttributeValue(newHeadTag, "hx-head") || defaultMergeStrategy;
+                const mergeStrategy = api.getAttributeValue(newHeadTag, "hx-head") || defaultMergeStrategy;
 
                 // get the current head
                 for (const currentHeadElt of currentHead.children) {
 
                     // If the current head element is in the map
-                    var inNewContent = srcToNewHeadNodes.has(currentHeadElt.outerHTML);
-                    var isReAppended = currentHeadElt.getAttribute("hx-head") === "re-eval";
-                    var isPreserved = api.getAttributeValue(currentHeadElt, "hx-preserve") === "true";
+                    const inNewContent = srcToNewHeadNodes.has(currentHeadElt.outerHTML);
+                    const isReAppended = currentHeadElt.getAttribute("hx-head") === "re-eval";
+                    const isPreserved = api.getAttributeValue(currentHeadElt, "hx-preserve") === "true";
                     if (inNewContent || isPreserved) {
                         if (isReAppended) {
                             // remove the current version and let the new version replace it and re-execute
@@ -93,7 +93,7 @@
 
                 for (const newNode of nodesToAppend) {
                     log("adding: ", newNode);
-                    var newElt = document.createRange().createContextualFragment(newNode.outerHTML);
+                    const newElt = document.createRange().createContextualFragment(newNode.outerHTML);
                     log(newElt);
                     if (api.triggerEvent(document.body, "htmx:addingHeadElement", {headElement: newElt}) !== false) {
                         currentHead.appendChild(newElt);
@@ -120,7 +120,7 @@
             api = apiRef;
 
             htmx.on('htmx:afterSwap', function(evt){
-                var serverResponse = evt.detail.xhr.response;
+                const serverResponse = evt.detail.xhr.response;
                 if (api.triggerEvent(document.body, "htmx:beforeHeadMerge", evt.detail)) {
                     mergeHead(serverResponse, evt.detail.boosted ? "merge" : "append");
                 }
@@ -137,7 +137,7 @@
             })
 
             htmx.on('htmx:historyItemCreated', function(evt){
-                var historyItem = evt.detail.item;
+                const historyItem = evt.detail.item;
                 historyItem.head = document.head.outerHTML;
             })
         }
