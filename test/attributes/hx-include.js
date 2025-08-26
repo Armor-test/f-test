@@ -10,12 +10,12 @@ describe('hx-include attribute', function() {
 
   it('By default an input includes itself', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       xhr.respond(200, {}, 'Clicked!')
     })
-    var div = make('<div hx-target="this"><input hx-post="/include" hx-trigger="click" id="i1" name="i1" value="test"/></div>')
-    var input = byId('i1')
+    const div = make('<div hx-target="this"><input hx-post="/include" hx-trigger="click" id="i1" name="i1" value="test"/></div>')
+    const input = byId('i1')
     input.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -23,12 +23,12 @@ describe('hx-include attribute', function() {
 
   it('non-GET includes closest form', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       xhr.respond(200, {}, 'Clicked!')
     })
-    var div = make('<form hx-target="this"><div id="d1" hx-post="/include"></div><input name="i1" value="test"/></form>')
-    var input = byId('d1')
+    const div = make('<form hx-target="this"><div id="d1" hx-post="/include"></div><input name="i1" value="test"/></form>')
+    const input = byId('d1')
     input.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -36,15 +36,15 @@ describe('hx-include attribute', function() {
 
   it('non-GET includes closest form and overrides values included that exist outside the form', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       xhr.respond(200, {}, 'Clicked!')
     })
-    var div = make('<div hx-include="*" hx-target="this">' +
+    const div = make('<div hx-include="*" hx-target="this">' +
             '<input name="i1" value="before"/>' +
             '<form><div id="d1" hx-post="/include"></div><input name="i1" value="test"/></form>' +
             '<input name="i1" value="after"/>')
-    var input = byId('d1')
+    const input = byId('d1')
     input.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -52,12 +52,12 @@ describe('hx-include attribute', function() {
 
   it('GET does not include closest form by default', function() {
     this.server.respondWith('GET', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       should.equal(params.i1, undefined)
       xhr.respond(200, {}, 'Clicked!')
     })
-    var div = make('<form hx-target="this"><div id="d1" hx-get="/include"></div><input name="i1" value="test"/></form>')
-    var input = byId('d1')
+    const div = make('<form hx-target="this"><div id="d1" hx-get="/include"></div><input name="i1" value="test"/></form>')
+    const input = byId('d1')
     input.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -65,12 +65,12 @@ describe('hx-include attribute', function() {
 
   it('Single input not included twice when in form', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       xhr.respond(200, {}, 'Clicked!')
     })
-    var div = make('<form hx-target="this"><input hx-post="/include" hx-trigger="click" id="i1" name="i1" value="test"/></form>')
-    var input = byId('i1')
+    const div = make('<form hx-target="this"><input hx-post="/include" hx-trigger="click" id="i1" name="i1" value="test"/></form>')
+    const input = byId('i1')
     input.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -78,15 +78,15 @@ describe('hx-include attribute', function() {
 
   it('Two inputs are included twice when they have the same name', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.deep.equal(['test', 'test2'])
       xhr.respond(200, {}, 'Clicked!')
     })
-    var div = make('<div hx-include="*" hx-target="this">' +
+    const div = make('<div hx-include="*" hx-target="this">' +
             '<input hx-post="/include" hx-trigger="click" id="i1" name="i1" value="test"/>' +
             '<input name="i1" value="test2"/>' +
             '</div>')
-    var input = byId('i1')
+    const input = byId('i1')
     input.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -94,15 +94,15 @@ describe('hx-include attribute', function() {
 
   it('Two inputs are included twice when in form when they have the same name', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.deep.equal(['test', 'test2'])
       xhr.respond(200, {}, 'Clicked!')
     })
-    var div = make('<form hx-target="this">' +
+    const div = make('<form hx-target="this">' +
             '<input hx-post="/include" hx-trigger="click" id="i1" name="i1" value="test"/>' +
             '<input name="i1" value="test2"/>' +
             '</form>')
-    var input = byId('i1')
+    const input = byId('i1')
     input.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -110,14 +110,14 @@ describe('hx-include attribute', function() {
 
   it('Input not included twice when it explicitly refers to parent form', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       xhr.respond(200, {}, 'Clicked!')
     })
-    var div = make('<form id="f1" hx-target="this">' +
+    const div = make('<form id="f1" hx-target="this">' +
             '<input hx-include="#f1" hx-post="/include" hx-trigger="click" id="i1" name="i1" value="test"/>' +
             '</form>')
-    var input = byId('i1')
+    const input = byId('i1')
     input.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -125,12 +125,12 @@ describe('hx-include attribute', function() {
 
   it('Input can be referred to externally', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       xhr.respond(200, {}, 'Clicked!')
     })
     make('<input id="i1" name="i1" value="test"/>')
-    var div = make('<div hx-post="/include" hx-include="#i1"></div>')
+    const div = make('<div hx-post="/include" hx-include="#i1"></div>')
     div.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -138,14 +138,14 @@ describe('hx-include attribute', function() {
 
   it('Two inputs can be referred to externally', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       params.i2.should.equal('test')
       xhr.respond(200, {}, 'Clicked!')
     })
     make('<input id="i1" name="i1" value="test"/>')
     make('<input id="i2" name="i2" value="test"/>')
-    var div = make('<div hx-post="/include" hx-include="#i1, #i2"></div>')
+    const div = make('<div hx-post="/include" hx-include="#i1, #i2"></div>')
     div.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -153,7 +153,7 @@ describe('hx-include attribute', function() {
 
   it('A form can be referred to externally', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       params.i2.should.equal('test')
       xhr.respond(200, {}, 'Clicked!')
@@ -162,7 +162,7 @@ describe('hx-include attribute', function() {
             '<input name="i1" value="test"/>' +
             '<input  name="i2" value="test"/>' +
             '</form> ')
-    var div = make('<div hx-post="/include" hx-include="#f1"></div>')
+    const div = make('<div hx-post="/include" hx-include="#f1"></div>')
     div.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -170,12 +170,12 @@ describe('hx-include attribute', function() {
 
   it('By default an input includes itself w/ data-* prefix', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       xhr.respond(200, {}, 'Clicked!')
     })
-    var div = make('<div data-hx-target="this"><input data-hx-post="/include" data-hx-trigger="click" id="i1" name="i1" value="test"/></div>')
-    var input = byId('i1')
+    const div = make('<div data-hx-target="this"><input data-hx-post="/include" data-hx-trigger="click" id="i1" name="i1" value="test"/></div>')
+    const input = byId('i1')
     input.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -183,13 +183,13 @@ describe('hx-include attribute', function() {
 
   it('If the element is not includeable, its descendant inputs are included', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       params.i2.should.equal('test')
       xhr.respond(200, {}, 'Clicked!')
     })
     make('<div id="i"><input name="i1" value="test"/><input name="i2" value="test"/></div>')
-    var div = make('<div hx-post="/include" hx-include="#i"></div>')
+    const div = make('<div hx-post="/include" hx-include="#i"></div>')
     div.click()
     this.server.respond()
     div.innerHTML.should.equal('Clicked!')
@@ -197,14 +197,14 @@ describe('hx-include attribute', function() {
 
   it('The `closest` modifier can be used in the hx-include selector', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       params.i2.should.equal('test')
       xhr.respond(200, {}, 'Clicked!')
     })
     make('<div id="i"><input name="i1" value="test"/><input name="i2" value="test"/>' +
             '<button id="btn" hx-post="/include" hx-include="closest div"></button></div>')
-    var btn = byId('btn')
+    const btn = byId('btn')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Clicked!')
@@ -212,14 +212,14 @@ describe('hx-include attribute', function() {
 
   it('The `this` modifier can be used in the hx-include selector', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       params.i2.should.equal('test')
       xhr.respond(200, {}, 'Clicked!')
     })
     make('<div id="i" hx-include="this"><input name="i1" value="test"/><input name="i2" value="test"/>' +
             '<button id="btn" hx-post="/include"></button></div>')
-    var btn = byId('btn')
+    const btn = byId('btn')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Clicked!')
@@ -227,7 +227,7 @@ describe('hx-include attribute', function() {
 
   it('Multiple extended selectors can be used in hx-include', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       params.i2.should.equal('foo')
       params.i3.should.equal('bar')
@@ -241,7 +241,7 @@ describe('hx-include attribute', function() {
       '<button id="btn" hx-post="/include" hx-include="closest div, next input, #i4"></button>' +
       '</div>' +
       '<input name="i3" value="bar"/>')
-    var btn = byId('btn')
+    const btn = byId('btn')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Clicked!')
@@ -249,7 +249,7 @@ describe('hx-include attribute', function() {
 
   it('hx-include processes extended selector in between standard selectors', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       should.equal(params.i2, undefined)
       params.i3.should.equal('bar')
@@ -263,7 +263,7 @@ describe('hx-include attribute', function() {
       '<button id="btn" hx-post="/include" hx-include="#i1, next input, #i4"></button>' +
       '</div>' +
       '<input name="i3" value="bar"/>')
-    var btn = byId('btn')
+    const btn = byId('btn')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Clicked!')
@@ -271,7 +271,7 @@ describe('hx-include attribute', function() {
 
   it('hx-include processes nested standard selectors correctly', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       params.i1.should.equal('test')
       params.i2.should.equal('foo')
       params.i3.should.equal('bar')
@@ -287,7 +287,7 @@ describe('hx-include attribute', function() {
       '<button id="btn" hx-post="/include" hx-include="next input, #i > :is([name=\'i1\'], [name=\'i2\'])"></button>' +
       '</div>' +
       '<input name="i3" value="bar"/>')
-    var btn = byId('btn')
+    const btn = byId('btn')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Clicked!')
@@ -295,7 +295,7 @@ describe('hx-include attribute', function() {
 
   it('hx-include processes wrapped next/previous selectors correctly', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       should.equal(params.i1, undefined)
       params.i2.should.equal('foo')
       params.i3.should.equal('bar')
@@ -311,7 +311,7 @@ describe('hx-include attribute', function() {
       '</div>' +
       '<input name="i3" value="bar"/>' +
       '<input name="i5" value="test"/>')
-    var btn = byId('btn')
+    const btn = byId('btn')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Clicked!')
@@ -319,7 +319,7 @@ describe('hx-include attribute', function() {
 
   it('hx-include processes wrapped closest selector correctly', function() {
     this.server.respondWith('POST', '/include', function(xhr) {
-      var params = getParameters(xhr)
+      const params = getParameters(xhr)
       should.equal(params.i1, undefined)
       params.i2.should.equal('bar')
       xhr.respond(200, {}, 'Clicked!')
@@ -331,7 +331,7 @@ describe('hx-include attribute', function() {
       '<button id="btn" hx-post="/include" hx-include="closest <section, div/>"></button>' +
       '</div>' +
       '</section>')
-    var btn = byId('btn')
+    const btn = byId('btn')
     btn.click()
     this.server.respond()
     btn.innerHTML.should.equal('Clicked!')
