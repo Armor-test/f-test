@@ -10,14 +10,14 @@
     }
 
     function parseClassOperation(trimmedValue) {
-        var split = splitOnWhitespace(trimmedValue);
+        const split = splitOnWhitespace(trimmedValue);
         if (split.length > 1) {
-            var operation = split[0];
-            var classDef = split[1].trim();
-            var cssClass;
-            var delay;
+            const operation = split[0];
+            const classDef = split[1].trim();
+            const cssClass;
+            const delay;
             if (classDef.indexOf(":") > 0) {
-                var splitCssClass = classDef.split(':');
+                const splitCssClass = classDef.split(':');
                 cssClass = splitCssClass[0];
                 delay = htmx.parseInterval(splitCssClass[1]);
             } else {
@@ -49,15 +49,15 @@
     }
 
     function processClassList(elt, classList) {
-        var runs = classList.split("&");
-        for (var i = 0; i < runs.length; i++) {
-            var run = runs[i];
-            var currentRunTime = 0;
-            var classOperations = run.split(",");
-            for (var j = 0; j < classOperations.length; j++) {
-                var value = classOperations[j];
-                var trimmedValue = value.trim();
-                var classOperation = parseClassOperation(trimmedValue);
+        const runs = classList.split("&");
+        for (const i = 0; i < runs.length; i++) {
+            const run = runs[i];
+            const currentRunTime = 0;
+            const classOperations = run.split(",");
+            for (const j = 0; j < classOperations.length; j++) {
+                const value = classOperations[j];
+                const trimmedValue = value.trim();
+                const classOperation = parseClassOperation(trimmedValue);
                 if (classOperation) {
                     if (classOperation.operation === "toggle") {
                         toggleOperation(elt, classOperation, classList, currentRunTime);
@@ -73,7 +73,7 @@
 
     function maybeProcessClasses(elt) {
         if (elt.getAttribute) {
-            var classList = elt.getAttribute("classes") || elt.getAttribute("data-classes");
+            const classList = elt.getAttribute("classes") || elt.getAttribute("data-classes");
             if (classList) {
                 processClassList(elt, classList);
             }
@@ -83,11 +83,11 @@
     htmx.defineExtension('class-tools', {
         onEvent: function (name, evt) {
             if (name === "htmx:afterProcessNode") {
-                var elt = evt.detail.elt;
+                const elt = evt.detail.elt;
                 maybeProcessClasses(elt);
                 if (elt.querySelectorAll) {
-                    var children = elt.querySelectorAll("[classes], [data-classes]");
-                    for (var i = 0; i < children.length; i++) {
+                    const children = elt.querySelectorAll("[classes], [data-classes]");
+                    for (const i = 0; i < children.length; i++) {
                         maybeProcessClasses(children[i]);
                     }
                 }
