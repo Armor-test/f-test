@@ -10,7 +10,7 @@ describe('hx-indicator attribute', function() {
 
   it('Indicator classes are properly put on element with no explicit indicator', function() {
     this.server.respondWith('GET', '/test', 'Clicked!')
-    var btn = make('<button hx-get="/test">Click Me!</button>')
+    const btn = make('<button hx-get="/test">Click Me!</button>')
     btn.click()
     btn.classList.contains('htmx-request').should.equal(true)
     this.server.respond()
@@ -19,9 +19,9 @@ describe('hx-indicator attribute', function() {
 
   it('Indicator classes are properly put on element with explicit indicator', function() {
     this.server.respondWith('GET', '/test', 'Clicked!')
-    var btn = make('<button hx-get="/test" hx-indicator="#a1, #a2">Click Me!</button>')
-    var a1 = make('<a id="a1"></a>')
-    var a2 = make('<a id="a2"></a>')
+    const btn = make('<button hx-get="/test" hx-indicator="#a1, #a2">Click Me!</button>')
+    const a1 = make('<a id="a1"></a>')
+    const a2 = make('<a id="a2"></a>')
     btn.click()
     btn.classList.contains('htmx-request').should.equal(false)
     a1.classList.contains('htmx-request').should.equal(true)
@@ -34,8 +34,8 @@ describe('hx-indicator attribute', function() {
 
   it('Indicator classes are properly put on element with relative indicator', function() {
     this.server.respondWith('GET', '/test', 'Clicked!')
-    var btn = make('<button hx-get="/test" hx-indicator="next a">Click Me!</button>')
-    var a1 = make('<a id="a1"></a>')
+    const btn = make('<button hx-get="/test" hx-indicator="next a">Click Me!</button>')
+    const a1 = make('<a id="a1"></a>')
     btn.click()
     btn.classList.contains('htmx-request').should.equal(false)
     a1.classList.contains('htmx-request').should.equal(true)
@@ -46,9 +46,9 @@ describe('hx-indicator attribute', function() {
 
   it('Indicator classes are properly put on element with explicit indicator w/ data-* prefix', function() {
     this.server.respondWith('GET', '/test', 'Clicked!')
-    var btn = make('<button hx-get="/test" data-hx-indicator="#a1, #a2">Click Me!</button>')
-    var a1 = make('<a id="a1"></a>')
-    var a2 = make('<a id="a2"></a>')
+    const btn = make('<button hx-get="/test" data-hx-indicator="#a1, #a2">Click Me!</button>')
+    const a1 = make('<a id="a1"></a>')
+    const a2 = make('<a id="a2"></a>')
     btn.click()
     btn.classList.contains('htmx-request').should.equal(false)
     a1.classList.contains('htmx-request').should.equal(true)
@@ -61,8 +61,8 @@ describe('hx-indicator attribute', function() {
 
   it('allows closest syntax in hx-indicator', function() {
     this.server.respondWith('GET', '/test', 'Clicked!')
-    var div = make('<div id="d1"><button id="b1" hx-get="/test" hx-indicator="closest div">Click Me!</button></div>')
-    var btn = byId('b1')
+    const div = make('<div id="d1"><button id="b1" hx-get="/test" hx-indicator="closest div">Click Me!</button></div>')
+    const btn = byId('b1')
     btn.click()
     btn.classList.contains('htmx-request').should.equal(false)
     div.classList.contains('htmx-request').should.equal(true)
@@ -73,9 +73,9 @@ describe('hx-indicator attribute', function() {
 
   it('is removed when initiating element is removed from the DOM', function() {
     this.server.respondWith('GET', '/test', 'Clicked!')
-    var indicator = make('<div id="ind1">Indicator</div>')
-    var div = make('<div id="d1" hx-target="this" hx-indicator="#ind1"><button id="b1" hx-get="/test">Click Me!</button></div>')
-    var btn = byId('b1')
+    const indicator = make('<div id="ind1">Indicator</div>')
+    const div = make('<div id="d1" hx-target="this" hx-indicator="#ind1"><button id="b1" hx-get="/test">Click Me!</button></div>')
+    const btn = byId('b1')
     btn.click()
     indicator.classList.contains('htmx-request').should.equal(true)
     this.server.respond()
@@ -84,8 +84,8 @@ describe('hx-indicator attribute', function() {
 
   it('allows this syntax in hx-indicator', function() {
     this.server.respondWith('GET', '/test', 'Clicked!')
-    var div = make('<div id="d1" hx-indicator="this"><button id="b1" hx-get="/test">Click Me!</button></div>')
-    var btn = byId('b1')
+    const div = make('<div id="d1" hx-indicator="this"><button id="b1" hx-get="/test">Click Me!</button></div>')
+    const btn = byId('b1')
     btn.click()
     btn.classList.contains('htmx-request').should.equal(false)
     div.classList.contains('htmx-request').should.equal(true)
@@ -96,9 +96,9 @@ describe('hx-indicator attribute', function() {
 
   it('multiple requests with same indicator are handled properly', function() {
     this.server.respondWith('GET', '/test', 'Clicked!')
-    var b1 = make('<button hx-get="/test" hx-indicator=".a1">Click Me!</button>')
-    var b2 = make('<button hx-get="/test" hx-indicator=".a1">Click Me!</button>')
-    var a1 = make('<a class="a1"></a>')
+    const b1 = make('<button hx-get="/test" hx-indicator=".a1">Click Me!</button>')
+    const b2 = make('<button hx-get="/test" hx-indicator=".a1">Click Me!</button>')
+    const a1 = make('<a class="a1"></a>')
 
     b1.click()
     b1.classList.contains('htmx-request').should.equal(false)
