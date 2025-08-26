@@ -4,13 +4,13 @@
             ".  It is recommended that you move to the version of this extension found on https://htmx.org/extensions")
     }
     function stringifyEvent(event) {
-        var obj = {};
-        for (var key in event) {
+        const obj = {};
+        for (const key in event) {
             obj[key] = event[key];
         }
         return JSON.stringify(obj, function(key, value){
             if(value instanceof Node){
-                var nodeRep = value.tagName;
+                const nodeRep = value.tagName;
                 if (nodeRep) {
                     nodeRep = nodeRep.toLowerCase();
                     if(value.id){
