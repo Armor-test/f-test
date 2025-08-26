@@ -12,7 +12,7 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 	}
 
 	/** @type {import("../htmx").HtmxInternalApi} */
-	var api;
+	const api;
 
 	htmx.defineExtension("ws", {
 
@@ -43,14 +43,14 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 		 * @param {Event} evt
 		 */
 		onEvent: function (name, evt) {
-			var parent = evt.target || evt.detail.elt;
+			const parent = evt.target || evt.detail.elt;
 
 			switch (name) {
 
 				// Try to close the socket when elements are removed
 				case "htmx:beforeCleanupElement":
 
-					var internalData = api.getInternalData(parent)
+					const internalData = api.getInternalData(parent)
 
 					if (internalData.webSocket) {
 						internalData.webSocket.close();
@@ -74,11 +74,11 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 	}
 
 	function getLegacyWebsocketURL(elt) {
-		var legacySSEValue = api.getAttributeValue(elt, "hx-ws");
+		const legacySSEValue = api.getAttributeValue(elt, "hx-ws");
 		if (legacySSEValue) {
-			var values = splitOnWhitespace(legacySSEValue);
-			for (var i = 0; i < values.length; i++) {
-				var value = values[i].split(/:(.+)/);
+			const values = splitOnWhitespace(legacySSEValue);
+			for (const i = 0; i < values.length; i++) {
+				const value = values[i].split(/:(.+)/);
 				if (value[0] === "connect") {
 					return value[1];
 				}
@@ -101,10 +101,10 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 		}
 
 		// Get the source straight from the element's value
-		var wssSource = api.getAttributeValue(socketElt, "ws-connect")
+		const wssSource = api.getAttributeValue(socketElt, "ws-connect")
 
 		if (wssSource == null || wssSource === "") {
-			var legacySource = getLegacyWebsocketURL(socketElt);
+			const legacySource = getLegacyWebsocketURL(socketElt);
 			if (legacySource == null) {
 				return;
 			} else {
@@ -114,7 +114,7 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 
 		// Guarantee that the wssSource value is a fully qualified URL
 		if (wssSource.indexOf("/") === 0) {
-			var base_part = location.hostname + (location.port ? ':' + location.port : '');
+			const base_part = location.hostname + (location.port ? ':' + location.port : '');
 			if (location.protocol === 'https:') {
 				wssSource = "wss://" + base_part + wssSource;
 			} else if (location.protocol === 'http:') {
@@ -122,7 +122,7 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 			}
 		}
 
-		var socketWrapper = createWebsocketWrapper(socketElt, function () {
+		const socketWrapper = createWebsocketWrapper(socketElt, function () {
 			return htmx.createWebSocket(wssSource)
 		});
 
@@ -131,7 +131,7 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 				return;
 			}
 
-			var response = event.data;
+			const response = event.data;
 			if (!api.triggerEvent(socketElt, "htmx:wsBeforeMessage", {
 				message: response,
 				socketWrapper: socketWrapper.publicInterface
@@ -143,12 +143,12 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 				response = extension.transformResponse(response, null, socketElt);
 			});
 
-			var settleInfo = api.makeSettleInfo(socketElt);
-			var fragment = api.makeFragment(response);
+			const settleInfo = api.makeSettleInfo(socketElt);
+			const fragment = api.makeFragment(response);
 
 			if (fragment.children.length) {
-				var children = Array.from(fragment.children);
-				for (var i = 0; i < children.length; i++) {
+				const children = Array.from(fragment.children);
+				for (const i = 0; i < children.length; i++) {
 					api.oobSwap(api.getAttributeValue(children[i], "hx-swap-oob") || "true", children[i], settleInfo);
 				}
 			}
@@ -180,7 +180,7 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 	 * @returns {WebSocketWrapper}
 	 */
 	function createWebsocketWrapper(socketElt, socketFunc) {
-		var wrapper = {
+		const wrapper = {
 			socket: null,
 			messageQueue: [],
 			retryCount: 0,
@@ -226,7 +226,7 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 
 			handleQueuedMessages: function () {
 				while (this.messageQueue.length > 0) {
-					var queuedItem = this.messageQueue[0]
+					const queuedItem = this.messageQueue[0]
 					if (this.socket.readyState === this.socket.OPEN) {
 						this.sendImmediately(queuedItem.message, queuedItem.sendElt);
 						this.messageQueue.shift();
@@ -244,7 +244,7 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 
 				// Create a new WebSocket and event handlers
 				/** @type {WebSocket} */
-				var socket = socketFunc();
+				const socket = socketFunc();
 
 				// The event.type detail is added for interface conformance with the
 				// other two lifecycle events (open and close) so a single handler method
@@ -263,7 +263,7 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 					// If socket should not be connected, stop further attempts to establish connection
 					// If Abnormal Closure/Service Restart/Try Again Later, then set a timer to reconnect after a pause.
 					if (!maybeCloseWebSocketSource(socketElt) && [1006, 1012, 1013].indexOf(e.code) >= 0) {
-						var delay = getWebSocketReconnectDelay(wrapper.retryCount);
+						const delay = getWebSocketReconnectDelay(wrapper.retryCount);
 						setTimeout(function () {
 							wrapper.retryCount += 1;
 							wrapper.init();
@@ -280,7 +280,7 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 					maybeCloseWebSocketSource(socketElt);
 				};
 
-				var events = this.events;
+				const events = this.events;
 				Object.keys(events).forEach(function (k) {
 					events[k].forEach(function (e) {
 						socket.addEventListener(k, e);
@@ -310,12 +310,12 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 	 * @param {HTMLElement} elt
 	 */
 	function ensureWebSocketSend(elt) {
-		var legacyAttribute = api.getAttributeValue(elt, "hx-ws");
+		const legacyAttribute = api.getAttributeValue(elt, "hx-ws");
 		if (legacyAttribute && legacyAttribute !== 'send') {
 			return;
 		}
 
-		var webSocketParent = api.getClosestMatch(elt, hasWebSocket)
+		const webSocketParent = api.getClosestMatch(elt, hasWebSocket)
 		processWebSocketSend(webSocketParent, elt);
 	}
 
@@ -335,8 +335,8 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 	 * @param {HTMLElement} sendElt
 	 */
 	function processWebSocketSend(socketElt, sendElt) {
-		var nodeData = api.getInternalData(sendElt);
-		var triggerSpecs = api.getTriggerSpecs(sendElt);
+		const nodeData = api.getInternalData(sendElt);
+		const triggerSpecs = api.getTriggerSpecs(sendElt);
 		triggerSpecs.forEach(function (ts) {
 			api.addTriggerHandler(sendElt, ts, nodeData, function (elt, evt) {
 				if (maybeCloseWebSocketSource(socketElt)) {
@@ -344,16 +344,16 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 				}
 
 				/** @type {WebSocketWrapper} */
-				var socketWrapper = api.getInternalData(socketElt).webSocket;
-				var headers = api.getHeaders(sendElt, api.getTarget(sendElt));
-				var results = api.getInputValues(sendElt, 'post');
-				var errors = results.errors;
-				var rawParameters = results.values;
-				var expressionVars = api.getExpressionVars(sendElt);
-				var allParameters = api.mergeObjects(rawParameters, expressionVars);
-				var filteredParameters = api.filterValues(allParameters, sendElt);
+				const socketWrapper = api.getInternalData(socketElt).webSocket;
+				const headers = api.getHeaders(sendElt, api.getTarget(sendElt));
+				const results = api.getInputValues(sendElt, 'post');
+				const errors = results.errors;
+				const rawParameters = results.values;
+				const expressionVars = api.getExpressionVars(sendElt);
+				const allParameters = api.mergeObjects(rawParameters, expressionVars);
+				const filteredParameters = api.filterValues(allParameters, sendElt);
 
-				var sendConfig = {
+				const sendConfig = {
 					parameters: filteredParameters,
 					unfilteredParameters: allParameters,
 					headers: headers,
@@ -373,9 +373,9 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 					return;
 				}
 
-				var body = sendConfig.messageBody;
+				const body = sendConfig.messageBody;
 				if (body === undefined) {
-					var toSend = Object.assign({}, sendConfig.parameters);
+					const toSend = Object.assign({}, sendConfig.parameters);
 					if (sendConfig.headers)
 						toSend['HEADERS'] = headers;
 					body = JSON.stringify(toSend);
@@ -398,13 +398,13 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 	function getWebSocketReconnectDelay(retryCount) {
 
 		/** @type {"full-jitter" | ((retryCount:number) => number)} */
-		var delay = htmx.config.wsReconnectDelay;
+		const delay = htmx.config.wsReconnectDelay;
 		if (typeof delay === 'function') {
 			return delay(retryCount);
 		}
 		if (delay === 'full-jitter') {
-			var exp = Math.min(retryCount, 6);
-			var maxDelay = 1000 * Math.pow(2, exp);
+			const exp = Math.min(retryCount, 6);
+			const maxDelay = 1000 * Math.pow(2, exp);
 			return maxDelay * Math.random();
 		}
 
@@ -436,7 +436,7 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 	 * @returns WebSocket
 	 */
 	function createWebSocket(url) {
-		var sock = new WebSocket(url, []);
+		const sock = new WebSocket(url, []);
 		sock.binaryType = htmx.config.wsBinaryType;
 		return sock;
 	}
@@ -449,7 +449,7 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 	 */
 	function queryAttributeOnThisOrChildren(elt, attributeName) {
 
-		var result = []
+		const result = []
 
 		// If the parent element also contains the requested attribute, then add it to the results too.
 		if (api.hasAttribute(elt, attributeName) || api.hasAttribute(elt, "hx-ws")) {
@@ -471,7 +471,7 @@ This extension adds support for WebSockets to htmx.  See /www/extensions/ws.md f
 	 */
 	function forEach(arr, func) {
 		if (arr) {
-			for (var i = 0; i < arr.length; i++) {
+			for (const i = 0; i < arr.length; i++) {
 				func(arr[i]);
 			}
 		}
