@@ -106,3 +106,11 @@ You can also run live tests and demo of the WebSockets and Server-Side Events ex
 *javascript fatigue:<br/>
 longing for a hypertext<br/>
 already in hand*
+
+## Security Best Practices
+
+- Use environment variables for all sensitive information
+- Never commit tokens or credentials to the repository
+- Enable two-factor authentication for all accounts
+- Regularly rotate access tokens and credentials
+- Follow the principle of least privilege for all permissions
