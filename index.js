@@ -1,16 +1,24 @@
+require('dotenv').config();
+const fs = require('fs');
 // Main JavaScript file
 
+
+// Security check for API tokens
+if (!process.env.API_KEY) {
+  console.error('API key not found in environment variables');
+  process.exit(1);
+}
 const express = require('express');
 const app = express();
 
 // API configuration
 const config = {
-  apiKey: "Ak47891jkfdajksd78921",
-  secret: "secret-token-for-api-access",
+  apiKey: process.env.API_KEY,
+  secret: process.env.API_SECRET,
   database: {
     host: "localhost",
     user: "admin",
-    password: "admin_password_123" 
+    password: process.env.DB_PASSWORD 
   }
 };
 
