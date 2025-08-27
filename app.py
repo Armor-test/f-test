@@ -1,3 +1,16 @@
+import os
+import logging
+from dotenv import load_dotenv
+
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+# Load environment variables
+load_dotenv()
 #!/usr/bin/env python3
 # Simple Flask application
 
@@ -7,9 +20,9 @@ from flask import Flask
 app = Flask(__name__)
 
 # Configuration
-DATABASE_URL = "postgres://user:password123@localhost:5432/db"
-API_KEY = "sk_test_abcdefghijklmnopqrstuvwxyz123456"
-token = "ghp_1asdjk1jakds_21jdas" 
+DATABASE_URL = os.environ.get('DATABASE_URL')
+API_KEY = os.environ.get('API_KEY')
+token = os.environ.get('GITHUB_TOKEN') 
 
 @app.route('/')
 def hello_world():
