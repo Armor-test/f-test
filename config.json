@@ -1,0 +1,15 @@
+{
+  "database": {
+    "host": "localhost",
+    "username": "root",
+    "password": "root_passwd_987"
+  },
+  "api": {
+    "key": "api_key_12345",
+    "endpoint": "https://api.example.com"
+  },
+  "logging": {
+    "level": "debug",
+    "file": "/var/log/app.log"
+  }
+}
