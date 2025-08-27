@@ -1,0 +1,19 @@
+{
+  "database": {
+    "host": "${DB_HOST}",
+    "username": "${DB_USER}",
+    "password": "${DB_PASSWORD}"
+  },
+  "api": {
+    "key": "${API_KEY}",
+    "endpoint": "${API_ENDPOINT}"
+  },
+  "security": {
+    "useEnvironmentVariables": true,
+    "secureMode": true
+  },
+  "logging": {
+    "level": "${LOG_LEVEL:-info}",
+    "securityAudit": true
+  }
+}
